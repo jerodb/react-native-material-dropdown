@@ -8,6 +8,15 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
 
+  circle: {
+    width: 10,
+    height: 10,
+    borderRadius: 10/2,
+    backgroundColor: '#256284',
+    marginLeft: 10,
+    marginTop: 5
+  },
+
   triangle: {
     width: 8,
     height: 8,

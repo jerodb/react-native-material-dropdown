@@ -145,6 +145,7 @@ export default class Dropdown extends PureComponent {
 
     renderBase: PropTypes.func,
     renderAccessory: PropTypes.func,
+    renderSelectedMark: PropTypes.func,
 
     containerStyle: (ViewPropTypes || View.propTypes).style,
     overlayStyle: (ViewPropTypes || View.propTypes).style,
@@ -168,6 +169,8 @@ export default class Dropdown extends PureComponent {
     this.updateScrollRef = this.updateRef.bind(this, 'scroll');
 
     this.renderAccessory = this.renderAccessory.bind(this);
+    this.renderSelectedMark = this.renderSelectedMark.bind(this)
+
     this.renderItem = this.renderItem.bind(this);
 
     this.keyExtractor = this.keyExtractor.bind(this);
@@ -617,11 +620,18 @@ export default class Dropdown extends PureComponent {
           itemColor:
         selectedItemColor;
 
-    let textStyle = { color, fontSize };
+    let fontWeight = ~selected && index === selected ? '500' : '400'
+
+    let textStyle = { color, fontSize, fontWeight };
 
     props.style = [
       style,
       {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        width: '100%',
         height: this.itemSize(),
         paddingLeft: leftInset,
         paddingRight: rightInset,
@@ -633,8 +643,19 @@ export default class Dropdown extends PureComponent {
         <Text style={[styles.item, itemTextStyle, textStyle]} numberOfLines={1}>
           {title}
         </Text>
+        {(~selected && index === selected && this.renderSelectedMark()) || <></>}
       </DropdownItem>
     );
+  }
+
+  renderSelectedMark() {
+    let {
+      renderSelectedMark
+    } = this.props;
+
+    const SelectedMark = renderSelectedMark ? renderSelectedMark() : (<View style={styles.circle} />);
+
+    return SelectedMark;
   }
 
   render() {
